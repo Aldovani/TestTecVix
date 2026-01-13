@@ -1,5 +1,5 @@
 import { Prisma, PrismaClient } from "@prisma/client";
-import fs from "fs/promises";
+import fs from "node:fs/promises";
 
 const prisma = new PrismaClient();
 const SEEDS_FOLDER_NAME = ""; // "seeds" folder inside temp folder: ex: "temp/SEEDS_FOLDER_NAME"
@@ -40,6 +40,7 @@ async function main() {
       // @ts-expect-error ts(2349)
       await prisma[table].createMany({ data });
     } catch (error) {
+      console.log("Error on seeding table ", table, error);
       if (
         error instanceof Error ||
         error instanceof Prisma.PrismaClientKnownRequestError ||
@@ -51,7 +52,10 @@ async function main() {
             const newData = data.map((item) => {
               return { ...item, sent_timestamp: BigInt(item.sent_timestamp) };
             });
+            console.log(prisma[table]);
             // @ts-expect-error ts(2349)
+
+
             await prisma[table].createMany({
               data: newData,
             });

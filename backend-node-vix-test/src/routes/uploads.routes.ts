@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { authUser } from "../auth/authUser";
 import { API_VERSION, ROOT_PATH } from "../constants/basePathRoutes";
 import { BucketController } from "../controllers/BucketController";
 import { BucketLocalService } from "../services/BucketLocalService";
@@ -14,7 +15,7 @@ export const makeBucketController = () => {
 
 const uploadsController = makeBucketController();
 
-uploadsRoutes.get(`${BASE_PATH}/:objectName`, async (req, res) => {
+uploadsRoutes.get(`${BASE_PATH}/:objectName`, authUser, async (req, res) => {
   await uploadsController.getFileInBucketByObjectName(req, res);
 });
 
