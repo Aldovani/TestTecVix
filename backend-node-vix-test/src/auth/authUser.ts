@@ -26,7 +26,7 @@ export const authUser = async (
   if (!data) {
     throw new AppError(ERROR_MESSAGE.UNAUTHORIZED, STATUS_CODE.UNAUTHORIZED);
   }
-  
+
   req.user = data;
   return next();
 };

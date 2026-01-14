@@ -5,7 +5,7 @@ import { CustomRequest } from "../types/custom";
 import { IBucketService } from "../types/Interfaces/IBucketService";
 
 export class BucketController {
-  constructor(private bucketService: IBucketService) { }
+  constructor(private bucketService: IBucketService) {}
 
   async getFileInBucketByObjectName(
     req: CustomRequest<unknown>,
