@@ -80,6 +80,7 @@ Você pode criar, instalar e utilizar outras bibliotecas, porém o **foco princi
 > **📢 IMPORTANTE**: Seu repositório fork **DEVE SER PÚBLICO** para que a equipe da Vituax possa avaliar seu trabalho.
 
 Certifique-se de que:
+
 - [ ] Seu repositório está configurado como **público** (não privado)
 - [ ] A equipe da Vituax consegue acessar o link sem necessidade de permissões especiais
 
@@ -153,6 +154,7 @@ Antes de começar, certifique-se de ter instalado:
 ## 🛠️ Stack Tecnológica
 
 ### Backend
+
 - **Node.js** - Runtime JavaScript
 - **Express** - Framework web
 - **Prisma** - ORM (Object-Relational Mapping)
@@ -162,6 +164,7 @@ Antes de começar, certifique-se de ter instalado:
 - **Jest** - Framework de testes
 
 ### Frontend
+
 - **React** - Biblioteca para interfaces
 - **TypeScript** - Tipagem estática
 - **Material-UI (MUI)** - Biblioteca de componentes
@@ -231,6 +234,7 @@ npm run db:up
 ```
 
 Este comando irá:
+
 - Subir um container Docker com MySQL
 - Utilizar o arquivo `docker-compose-db.yml`
 - Expor o banco na porta **3312**
@@ -336,7 +340,7 @@ npm run dc:up
 ## 🔌 Estrutura de Portas
 
 | Serviço  | Porta |
-|----------|-------|
+| -------- | ----- |
 | Frontend | 3000  |
 | Backend  | 3001  |
 | MySQL    | 3312  |
@@ -354,10 +358,12 @@ npm run dc:up
 ### Tipos de Usuários
 
 #### Usuário Vituax
+
 - Usuário **sem** `idBrandMaster` associado
 - Considerado um usuário da própria Vituax
 
 #### Usuário com BrandMaster
+
 - Usuário **com** `idBrandMaster` associado
 - Pertence a uma empresa/MSP específica
 
@@ -368,7 +374,7 @@ npm run dc:up
 O sistema possui três níveis de permissão:
 
 | Tipo      | Leitura | Criação | Edição | Exclusão |
-|-----------|---------|---------|--------|----------|
+| --------- | ------- | ------- | ------ | -------- |
 | `member`  | ✅      | ❌      | ❌     | ❌       |
 | `manager` | ✅      | ✅      | ✅     | ❌       |
 | `admin`   | ✅      | ✅      | ✅     | ✅       |
@@ -383,9 +389,7 @@ O sistema possui três níveis de permissão:
 
 ## 🔑 Credenciais de Teste
 
-> **Importante**: Após implementar o sistema de autenticação, adicione aqui as credenciais de usuários de teste para cada tipo de permissão.
-
-Exemplo:
+Utilize as seguintes credenciais para testar diferentes níveis de permissão:
 
 ```
 Admin:
@@ -452,21 +456,21 @@ git commit -m "docs: atualiza README com credenciais de teste"
 
 ### 📋 Configuração Inicial
 
-- [ ] Criar arquivo `.env` baseado no `.env.example` (backend)
-- [ ] Criar arquivo `.env` baseado no `.env.exemple` (frontend)
+- [x] Criar arquivo `.env` baseado no `.env.example` (backend)
+- [x] Criar arquivo `.env` baseado no `.env.example` (frontend)
 
 ---
 
 ### 🔐 Autenticação e Autorização
 
-- [ ] Implementar as rotas de CRUD para usuários
-- [ ] Implementar rota de login do usuário
-- [ ] Implementar tela de login `/login`
-- [ ] Implementar rota de register do usuário
-- [ ] Implementar tela de register `/register`
-- [ ] Implementar autenticação com token JWT
-- [ ] Proteger as rotas da aplicação (exceto login e register) para que somente usuários logados possam acessar
-- [ ] Adicionar credenciais de usuários de teste no README e/ou `.env.example`
+- [x] Implementar as rotas de CRUD para usuários
+- [x] Implementar rota de login do usuário
+- [x] Implementar tela de login `/login`
+- [x] Implementar rota de register do usuário
+- [x] Implementar tela de register `/register`
+- [x] Implementar autenticação com token JWT
+- [x] Proteger as rotas da aplicação (exceto login e register) para que somente usuários logados possam acessar
+- [x] Adicionar credenciais de usuários de teste no README e/ou `.env.example`
 
 ---
 
@@ -686,4 +690,3 @@ Se tiver dúvidas sobre o teste, entre em contato com o time da Vituax.
 **Boa sorte! 🚀**
 
 **Esperamos receber o link do seu repositório em breve!** 📬
-

@@ -1,10 +1,11 @@
 import { create } from "zustand";
 import { middlewareLocalStorage } from "./middlewareLocalStorage";
+import { LOCAL_STORAGE_KEYS } from "../configs/localStorageKeys";
 
 export type TRole = "admin" | "manager" | "member";
 
 export interface IUserProfile {
-  idUser: number | null;
+  idUser: string | null;
   profileImgUrl: string | null;
   objectName?: string;
   imageUrl?: string;
@@ -42,7 +43,7 @@ interface IUserProfileState extends IUserProfile {
   }) => void;
   resetAll: () => void;
 }
-const middle = middlewareLocalStorage<IUserProfileState>("userProfile");
+const middle = middlewareLocalStorage<IUserProfileState>(LOCAL_STORAGE_KEYS.userProfile);
 
 export const useZUserProfile = create<IUserProfileState>()(
   middle((set) => ({
