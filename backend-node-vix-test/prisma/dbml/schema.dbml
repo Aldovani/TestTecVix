@@ -43,7 +43,9 @@ Table vM {
   vCPU Int [not null]
   ram Int [not null]
   disk Int [not null]
-  hasBackup Boolean [default: false]
+  pass String [not null]
+  location ETaskLocation [not null, default: 'LOCAL']
+  hasBackup Boolean [not null, default: false]
   idBrandMaster Int
   status EVMStatus
   createdAt DateTime [default: `now()`]
@@ -67,6 +69,11 @@ Table user {
   updatedAt DateTime [default: `now()`]
   deletedAt DateTime
   brandMaster brandMaster
+}
+
+Enum ETaskLocation {
+  LOCAL
+  REMOTE
 }
 
 Enum EVMStatus {
