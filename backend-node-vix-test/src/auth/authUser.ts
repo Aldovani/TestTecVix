@@ -1,10 +1,11 @@
-import { Response, NextFunction } from "express";
-import { AppError } from "../errors/AppError";
+import { user } from "@prisma/client";
+import { NextFunction, Response } from "express";
 import { ERROR_MESSAGE } from "../constants/erroMessages";
 import { STATUS_CODE } from "../constants/statusCode";
-import { verifyToken } from "../utils/jwt";
+import { AppError } from "../errors/AppError";
+import { UserModel } from "../models/userModel";
 import { CustomRequest } from "../types/custom";
-import { user } from "@prisma/client";
+import { verifyToken } from "../utils/jwt";
 
 export const authUser = async (
   req: CustomRequest<user>,
@@ -17,12 +18,15 @@ export const authUser = async (
   }
   const token = authorization.split(" ")[1];
 
-  // const idUser = verifyToken(token);
-  // const user = //
+  const userModel = new UserModel();
 
-  // if (isInvalidUser) {
-  //   throw new AppError(ERROR_MESSAGE.UNAUTHORIZED, STATUS_CODE.UNAUTHORIZED);
-  // }
-  // req.user = user;
+  const user = await verifyToken(token);
+  const data = await userModel.getById(user.idUser);
+
+  if (!data) {
+    throw new AppError(ERROR_MESSAGE.UNAUTHORIZED, STATUS_CODE.UNAUTHORIZED);
+  }
+
+  req.user = data;
   return next();
 };

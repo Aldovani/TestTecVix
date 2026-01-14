@@ -1,39 +1,19 @@
 import { useState } from "react";
-import { api } from "../services/api";
-import { toast } from "react-toastify";
-import { useZGlobalVar } from "../stores/useZGlobalVar";
-import { useZUserProfile } from "../stores/useZUserProfile";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { login } from "../services/auth/login";
+import { useZGlobalVar } from "../stores/useZGlobalVar";
 import { useZResetAllStates } from "../stores/useZResetAllStates";
-
-interface IUserLoginResponse {
-  token: string | null;
-  user: {
-    createdAt: string | Date;
-    deletedAt: string | Date | null;
-    email: string;
-    idBrandMaster: number | null;
-    idUser: number;
-    isActive: boolean;
-    profileImgUrl: null | string;
-    role: "admin" | "manager" | "member";
-    updatedAt: string | Date;
-    username: string;
-    userPhoneNumber: string | null;
-  };
-}
-
+import { useZUserProfile } from "../stores/useZUserProfile";
 
 export const useLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { setIsOpenModalUserNotActive, setLoginTime } =
-    useZGlobalVar();
+  const { setIsOpenModalUserNotActive, setLoginTime } = useZGlobalVar();
   const { setUser } = useZUserProfile();
   const { resetAllStates } = useZResetAllStates();
   const navigate = useNavigate();
 
   const goLogin = async ({
-    username,
     password,
     email,
   }: {
@@ -42,26 +22,20 @@ export const useLogin = () => {
     email: string;
   }) => {
     setIsLoading(true);
-    if ((!username && !email) || !password) {
+    if (!email && !password) {
       setIsLoading(false);
+      toast.error("Por favor, preencha os campos obrigatórios.");
       return;
     }
 
-    const response = await api.post<IUserLoginResponse>({
-      url: "/user/login",
-      data: {
-        username: username || undefined,
-        password,
-        email: email || undefined,
-      },
-      tryRefetch: true,
-    });
+    const response = await login({ email, password });
 
     setIsLoading(false);
     if (response.error) {
-      toast.error(response.message);
+      toast.error(response.message || "Erro ao tentar efetuar login.");
       return;
     }
+
     if (!response.data.user?.isActive) {
       setIsOpenModalUserNotActive(true);
       return;
@@ -73,11 +47,13 @@ export const useLogin = () => {
       username: response.data.user.username,
       userEmail: response.data.user.email,
       idBrand: response.data.user.idBrandMaster,
-      token: response.data.token,
+      token: response.data.accessToken,
       role: response.data.user.role,
       userPhoneNumber: response.data.user.userPhoneNumber,
     });
     setLoginTime(new Date());
+
+    return navigate("/");
   };
 
   const goLogout = () => {

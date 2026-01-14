@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useNavigate } from "react-router-dom";
-import { useZResetAllStates } from "../stores/useZResetAllStates";
-import { FullPage } from "../components/Skeletons/FullPage";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FullPage } from "../components/Skeletons/FullPage";
+import { useZResetAllStates } from "../stores/useZResetAllStates";
+import { useZUserProfile } from "../stores/useZUserProfile";
 
 interface IProps {
   children: React.ReactNode;
@@ -17,29 +17,41 @@ export const PrivatePage = ({
   onlyManagerOrAdmin = false,
 }: IProps) => {
   const [isChecking, setIsChecking] = useState(true);
+  const { role, idUser, token } = useZUserProfile();
   const { resetAllStates } = useZResetAllStates();
   const navigate = useNavigate();
 
   useEffect(() => {
-    switch (true) {
-      // case !idUser:
-      //   resetAllStates();
-      //   navigate("/login");
-      //   break;
-      // case onlyAdmin && role !== "admin":
-      //   navigate(-1);
-      //   break;
-      // case onlyManagerOrAdmin && role !== "admin" && role !== "manager":
-      //   navigate(-1);
-      //   break;
+    // console.log({ token, idUser });
+    // if (!token || !idUser) {
+    //   resetAllStates();
+    //   navigate("/login");
+    //   return;
+    // }
 
-      default:
-        setIsChecking(false);
-        break;
-    }
-  }, []);
+    // if (onlyAdmin && role !== "admin") {
+    //   resetAllStates();
+    //   navigate("/login");
+    //   return;
+    // }
 
-  // if (!idUser) return <FullPage />;
+    // if (onlyManagerOrAdmin && role !== "admin" && role !== "manager") {
+    //   navigate(-1);
+    //   return;
+    // }
+
+    setIsChecking(false);
+  }, [
+    idUser,
+    navigate,
+    onlyAdmin,
+    onlyManagerOrAdmin,
+    resetAllStates,
+    role,
+    token,
+  ]);
+
+  // if (!idUser || !token) return <FullPage />;
 
   if (isChecking) {
     return <FullPage />;

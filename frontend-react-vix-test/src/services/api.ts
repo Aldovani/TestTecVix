@@ -1,4 +1,5 @@
 import axios, { AxiosError } from "axios";
+import { LOCAL_STORAGE_KEYS } from "../configs/localStorageKeys";
 
 export interface IResponse<T> {
   message: string;
@@ -6,6 +7,25 @@ export interface IResponse<T> {
   err: unknown;
   data: T;
 }
+
+const httpClient = axios.create();
+
+httpClient.interceptors.request.use((config) => {
+  try {
+    const state = localStorage.getItem(LOCAL_STORAGE_KEYS.userProfile);
+
+    const token = state ? JSON.parse(state)!.token : null;
+
+    if (token && config.headers) {
+      console.log("Attaching token to request:", token);
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  } catch {
+    return config;
+  }
+});
 
 export const baseAuth = (auth: Record<string, unknown> = {}) => {
   const signature = import.meta.env.VITE_SIGN_HASH || "";
@@ -66,7 +86,7 @@ const app = async <T>({
     const BASE_URL =
       import.meta.env.VITE_BASE_URL || "http://localhost:3001/api/v1";
     const nAuth = baseAuth(auth);
-    const response: { data: T } = await axios({
+    const response: { data: T } = await httpClient({
       ...(timeout && { timeout }),
       method,
       url: fullEndpoint || `${BASE_URL}${url}`,
@@ -84,7 +104,8 @@ const app = async <T>({
         (error.code === "ECONNABORTED" && error.message.includes("timeout"))
       ) {
         if (tryRefetch) {
-          // implementar um log de registros desses erros
+          console.log("Retrying request...", { url, method });
+
           return retryRequest<T>({
             method,
             url,
